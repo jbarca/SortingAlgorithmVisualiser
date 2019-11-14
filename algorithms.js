@@ -5,7 +5,7 @@
 */
 
 // Global array for now, change later
-var array = [5, 6, 7, 8];
+var array = [8, 7, 9, 10, 2, 5, 1];
 
 function getAlgorithm(dropDownName) {
     /* Returns the value of the "id" of the algorithm */
@@ -30,6 +30,25 @@ function selectAlgorithm(algorithm) {
             break;
         default:
             throw "Incorrect sorting algorithm name.";
+    }
+}
+
+function selection_sort(array) {
+    var newArray = array;
+
+    console.log(newArray);
+    var min_index = 0;
+    var temp;
+    for (var i = 0; i < newArray.length; i++) {
+        min_index = i;
+        for (var j = i + 1; j < newArray.length; j++) {
+            if (newArray[j] < newArray[min_index]) {
+                min_index = j;
+            }
+        }
+        temp = newArray[i];
+        newArray[i] = newArray[min_index];
+        newArray[min_index] = temp;
     }
 }
 
