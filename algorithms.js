@@ -34,7 +34,7 @@ function selectAlgorithm(algorithm) {
 }
 
 function selection_sort(array) {
-    var newArray = array;
+    var newArray = array.slice();
 
     var min_index = 0;
     var temp;
