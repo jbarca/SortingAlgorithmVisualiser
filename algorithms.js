@@ -36,7 +36,6 @@ function selectAlgorithm(algorithm) {
 function selection_sort(array) {
     var newArray = array;
 
-    console.log(newArray);
     var min_index = 0;
     var temp;
     for (var i = 0; i < newArray.length; i++) {
