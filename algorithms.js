@@ -1,11 +1,11 @@
 /*  Implementation of sorting algorithms 
     Author: Jacob Barca
     Since: 14/11/2019
-    Last Modified: 14/11/2019
+    Last Modified: 15/11/2019
 */
 
 // Global array for now, change later
-var array = [8, 7, 9, 10, 2, 5, 1];
+var array = [8, 7, 9, 10, 2, 5, 1, -4];
 
 function getAlgorithm(dropDownName) {
     /* Returns the value of the "id" of the algorithm */
@@ -34,6 +34,7 @@ function selectAlgorithm(algorithm) {
 }
 
 function selection_sort(array) {
+    /* Selection sort implementation: worst case O(n^2) */
     var newArray = array.slice();
 
     var min_index = 0;
@@ -49,6 +50,83 @@ function selection_sort(array) {
         newArray[i] = newArray[min_index];
         newArray[min_index] = temp;
     }
+
+    return newArray;
+}
+
+function insertion_sort(array) {
+    /* Insertion sort implementation: worst case O(n^2) */
+    var newArray = array.slice();
+    var j;
+    var temp;
+    for (var i = 0; i < newArray.length; i++) {
+        j = i;
+        while (j > 0 && newArray[j] < newArray[j - 1]) {
+            temp = newArray[j];
+            newArray[j] = newArray[j - 1];
+            newArray[j - 1] = temp;
+            j--;
+        }
+    }
+
+    return newArray;
+}
+
+function bubble_sort(array) {
+    /* Bubble sort implementation: worst case O(n^2) */
+    var newArray = array.slice();
+
+    var mark = newArray.length - 1;
+    var temp;
+    for (var i = mark; i > 0; i--) {
+        for (var j = 0; j < i; j++) {
+            if (newArray[j] > newArray[j + 1]) {
+                temp = newArray[j];
+                newArray[j] = newArray[j + 1];
+                newArray[j + 1] = temp;
+            }
+        }
+    }
+
+    return newArray;
+}
+
+function quick_sort(array) {
+    /* Quick sort implementation: worst case O(n^2) */
+    var newArray = array.slice();
+    quick_sort_aux(newArray, 0, newArray.length - 1);
+    return newArray;
+}
+
+function quick_sort_aux(array, start, end) {
+    /* Quick sort helper method: recursively sorts sub-lists */
+    if (start < end) {
+        var bound = partition(array, start, end);
+        quick_sort_aux(array, start, bound - 1);
+        quick_sort_aux(array, bound + 1, end);
+    }
+}
+
+function partition(lst, start, end) {
+    /* Helper method to partition sub-lists */
+    var pivot = lst[end]
+    bound = start - 1;
+    var temp;
+    for (var i = start; i <= end; i++) {
+        if (lst[i] < pivot) {
+            bound++;
+            temp = lst[i];
+            lst[i] = lst[bound];
+            lst[bound] = temp;
+        }
+    }
+
+    temp = lst[end];
+    lst[end] = lst[bound + 1];
+    lst[bound + 1] = temp;
+
+    return bound + 1;
+
 }
 
 
