@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<script type="text/javascript" src="algorithms.js"></script>
+<script type="module" src="algorithms.js"></script>
 <html>
     <center>
     <h1>Sorting visualiser</h1>
@@ -13,9 +13,9 @@
         </select> <br><br>
         <input type="submit" value="Sort!" onclick="selectAlgorithm(getAlgorithm('algorithms'))">
         <input type="submit" value="Generate new array">
-    </form>
-    </center> <br><br>
+    </form> <br><br>
+    <canvas id="visualiser" width="500" height="500" style="border:1px solid #000000;"></canvas>
+    </center>
     <!-- TODO: Allow canvas width to scale with page width -->
-    <canvas id="visualiser" width="window.innerWidth" height="550" style="border:1px solid #000000;"></canvas>
     <script type="text/javascript" src="canvas.js"></script>
 </html>
