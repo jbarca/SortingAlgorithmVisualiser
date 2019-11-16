@@ -1,7 +1,7 @@
 /*  Implementation of sorting algorithms 
     Author: Jacob Barca
     Since: 14/11/2019
-    Last Modified: 15/11/2019
+    Last Modified: 16/11/2019
 */
 
 // Global array for now, change later
