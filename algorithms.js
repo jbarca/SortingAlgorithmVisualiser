@@ -129,6 +129,8 @@ function partition(lst, start, end) {
 
 }
 
+export { selection_sort, insertion_sort, bubble_sort, quick_sort };
+
 
 
 
