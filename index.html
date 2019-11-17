@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <script type="module" src="algorithms.js"></script>
+<script type="module" src="canvas.js"></script>
 <html>
     <center>
     <h1>Sorting visualiser</h1>
@@ -11,11 +12,9 @@
             <option value="bubble_sort">Bubble sort</option>
             <option value="quick_sort">Quick sort</option>
         </select> <br><br>
-        <input type="submit" value="Sort!" onclick="selectAlgorithm(getAlgorithm('algorithms'))">
-        <input type="submit" value="Generate new array">
+        <input id="sort" type="submit" value="Sort!">
+        <input id="new" type="submit" value="Generate new array">
     </form> <br><br>
-    <canvas id="visualiser" width="500" height="500" style="border:1px solid #000000;"></canvas>
+    <canvas id="visualiser" style="border:1px solid #000000;"></canvas>
     </center>
-    <!-- TODO: Allow canvas width to scale with page width -->
-    <script type="text/javascript" src="canvas.js"></script>
 </html>
