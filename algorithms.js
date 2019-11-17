@@ -1,11 +1,8 @@
 /*  Implementation of sorting algorithms 
     Author: Jacob Barca
     Since: 14/11/2019
-    Last Modified: 16/11/2019
+    Last Modified: 17/11/2019
 */
-
-// Global array for now, change later
-var array = [8, 7, 9, 10, 2, 5, 1, -4];
 
 function getAlgorithm(dropDownName) {
     /* Returns the value of the "id" of the algorithm */
@@ -13,7 +10,7 @@ function getAlgorithm(dropDownName) {
     return e.value;
 }
 
-function selectAlgorithm(algorithm) {
+function selectAlgorithm(algorithm, array) {
     /* Selects the correct algorithm based on user's selection */
     switch (algorithm) {
         case "selection_sort":
@@ -32,6 +29,8 @@ function selectAlgorithm(algorithm) {
             throw "Incorrect sorting algorithm name.";
     }
 }
+
+/* Not for use, just for knowledge */
 
 function selection_sort(array) {
     /* Selection sort implementation: worst case O(n^2) */
@@ -129,7 +128,7 @@ function partition(lst, start, end) {
 
 }
 
-export { selection_sort, insertion_sort, bubble_sort, quick_sort };
+export { getAlgorithm, selectAlgorithm };
 
 
 
