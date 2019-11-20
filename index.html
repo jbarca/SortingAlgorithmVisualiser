@@ -4,6 +4,7 @@
 <html>
     <center>
     <h1>Sorting visualiser</h1>
+    <body>
     <form>
         Please select a sorting algorithm: <br><br>
         <select id="algorithms">
@@ -12,9 +13,10 @@
             <option value="bubble_sort">Bubble sort</option>
             <option value="quick_sort">Quick sort</option>
         </select> <br><br>
-        <input id="sort" type="submit" value="Sort!">
-        <input id="new" type="submit" value="Generate new array">
+        <input id="sort" type="button" value="Sort!">
+        <input id="new" type="button" value="Generate new array">
     </form> <br><br>
     <canvas id="visualiser" style="border:1px solid #000000;"></canvas>
+    </body>
     </center>
 </html>
