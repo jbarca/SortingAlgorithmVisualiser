@@ -1,10 +1,10 @@
 /*  Canvas to visualise the algorithms
     Author: Jacob Barca
     Since: 15/11/2019
-    Last Modified: 17/11/2019
+    Last Modified: 20/11/2019
 */
 
-import { getAlgorithm, selectAlgorithm } from './algorithms.js';
+import { getAlgorithm } from './algorithms.js';
 
 /* Constants */
 const MAX_WIDTH = 500;
@@ -27,6 +27,7 @@ newArrayButton.onclick = function() {
     for (var i = 0; i < array.length; i++) {
         array[i] = Math.floor((Math.random() * 10) + 1);
     }
+    MAX_ELEMENT_HEIGHT = MAX_HEIGHT / Math.max(...array);
     rects = createRectangles();
     drawRectangles();
 }
@@ -59,6 +60,40 @@ class Rectangle {
     setColour(newColour) {
         this.colour = newColour;
     }
+
+    setX(newX) {
+        this.x = newX;
+    }
+
+    setY(newY) {
+        this.y = newY;
+    }
+
+    setWidth(newWidth) {
+        this.width = newWidth;
+    }
+
+    setHeight(newHeight) {
+        this.height = newHeight;
+    }
+
+    getX() {
+        return this.x;
+    }
+
+    getY() {
+        return this.y;
+    }
+
+    getWidth() {
+        return this.width;
+    }
+
+    getHeight() {
+        return this.height;
+    }
+
+    
 }
 
 /* Init */
@@ -68,7 +103,7 @@ function init() {
     canvas.height = MAX_HEIGHT;
     ctx = canvas.getContext("2d");
     rects = createRectangles();
-    drawRectangles(rects);
+    drawRectangles();
 }
 
 function createRectangles() {
@@ -89,4 +124,61 @@ function clearRectangles() {
     for (var i = 0; i < rects.length; i++) {
         rects[i].clear();
     }
+}
+
+function animateSorting() {
+    var alg = getAlgorithm('algorithms');
+    switch (alg) {
+        case "selection_sort":
+            selection_sort();
+            break;
+        case "insertion_sort":
+            insertion_sort();
+            break;
+        case "bubble_sort":
+            bubble_sort();
+            break;
+        case "quick_sort":
+            quick_sort();
+            break;
+        default:
+            throw "Incorrect sorting algorithm name.";
+    }
+    console.log(rects);
+    console.log(array);
+}
+
+function swap(_array, i, j) {
+    var tmp = _array[i];
+    _array[i] = _array[j];
+    _array[j] = tmp;
+}
+
+function swapRectangles(_array, i, j) {
+    var tmpX = _array[i].getX();
+    _array[i].setX(_array[j].getX());
+    _array[j].setX(tmpX);
+}
+
+function selection_sort() {
+    console.log(rects);
+    console.log(array);
+    var min_index = 0;
+    for (var i = 0; i < array.length; i++) {
+        min_index = i;
+        for (var j = i + 1; j < array.length; j++) {
+            if (array[j] < array[min_index]) {
+                min_index = j;
+            }
+        }
+        swap(array, i, min_index);
+        
+        // TODO: Fix rectangle swaps when sorting, rectangles are 
+        // not in correct x position after sorting.
+        clearRectangles();
+        swapRectangles(rects, min_index, i);
+        drawRectangles();
+    }
+    clearRectangles();
+    drawRectangles();
 }
