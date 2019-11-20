@@ -128,7 +128,7 @@ function partition(lst, start, end) {
 
 }
 
-export { getAlgorithm, selectAlgorithm };
+export { getAlgorithm };
 
 
 
