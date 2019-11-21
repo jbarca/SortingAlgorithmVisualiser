@@ -144,8 +144,6 @@ function animateSorting() {
         default:
             throw "Incorrect sorting algorithm name.";
     }
-    console.log(rects);
-    console.log(array);
 }
 
 function swap(_array, i, j) {
@@ -158,11 +156,10 @@ function swapRectangles(_array, i, j) {
     var tmpX = _array[i].getX();
     _array[i].setX(_array[j].getX());
     _array[j].setX(tmpX);
+    swap(rects, i, j);
 }
 
 function selection_sort() {
-    console.log(rects);
-    console.log(array);
     var min_index = 0;
     for (var i = 0; i < array.length; i++) {
         min_index = i;
@@ -173,12 +170,10 @@ function selection_sort() {
         }
         swap(array, i, min_index);
         
-        // TODO: Fix rectangle swaps when sorting, rectangles are 
-        // not in correct x position after sorting.
+        // TODO: Slow down sorting and display it frame by
+        // frame with different colours. 
         clearRectangles();
-        swapRectangles(rects, min_index, i);
+        swapRectangles(rects, i, min_index);
         drawRectangles();
     }
-    clearRectangles();
-    drawRectangles();
 }
