@@ -30,7 +30,7 @@ sortButton.onclick = function() {
 }
 
 newArrayButton.onclick = function() {
-    clearRectangles();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (var i = 0; i < array.length; i++) {
         array[i] = Math.floor((Math.random() * 100) + 1);
     }
