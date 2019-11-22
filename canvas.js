@@ -30,7 +30,7 @@ sortButton.onclick = function() {
 }
 
 newArrayButton.onclick = function() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    clearScreen();
     for (var i = 0; i < array.length; i++) {
         array[i] = Math.floor((Math.random() * 100) + 1);
     }
@@ -135,10 +135,13 @@ function drawRectangles() {
     }
 }
 
-function clearRectangles() {
+function clearScreen() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    /*
     for (var i = 0; i < rects.length; i++) {
         rects[i].clear();
     }
+    */
 }
 
 function animateSorting() {
@@ -162,7 +165,7 @@ function animateSorting() {
 }
 
 function changeColour(index, colour) {
-    clearRectangles();
+    clearScreen();
     rects[index].setColour(colour);
     drawRectangles();
 }
@@ -200,7 +203,7 @@ async function selection_sort() {
         changeColour(min_index, "#FF0000");
         swap(array, i, min_index);
         
-        clearRectangles();
+        clearScreen();
         swapRectangles(rects, i, min_index);
         drawRectangles();
         await sleep(sortingSpeed);
