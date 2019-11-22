@@ -9,12 +9,12 @@ import { getAlgorithm } from './algorithms.js';
 /* Constants */
 const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
-var sortingSpeed = 1000; // ms
-var array = [1, 2, 3, 4, 5];
+var sortingSpeed = 4; // ms - minimum time is 4ms for setTimeout
+var array = [];
 var rects = [];
 var canvas = null;
 var ctx = null;
-var MAX_ELEMENT_HEIGHT = MAX_HEIGHT / Math.max(...array);
+var MAX_ELEMENT_HEIGHT;
 
 var sortButton = document.getElementById("sort");
 var newArrayButton = document.getElementById("new");
@@ -32,7 +32,7 @@ sortButton.onclick = function() {
 newArrayButton.onclick = function() {
     clearRectangles();
     for (var i = 0; i < array.length; i++) {
-        array[i] = Math.floor((Math.random() * 10) + 1);
+        array[i] = Math.floor((Math.random() * 100) + 1);
     }
     MAX_ELEMENT_HEIGHT = MAX_HEIGHT / Math.max(...array);
     rects = createRectangles();
@@ -109,8 +109,16 @@ function init() {
     canvas.width = MAX_WIDTH;
     canvas.height = MAX_HEIGHT;
     ctx = canvas.getContext("2d");
+    createArray(50);
     rects = createRectangles();
     drawRectangles();
+}
+
+function createArray(n) {
+    for (var i = 0; i < n; i++) {
+        array.push(Math.floor(Math.random() * 100) + 1);
+    }
+    MAX_ELEMENT_HEIGHT = MAX_HEIGHT / Math.max(...array);
 }
 
 function createRectangles() {
@@ -180,6 +188,7 @@ async function selection_sort() {
             changeColour(j, "#00FF00") // green
             await sleep(sortingSpeed);
             if (array[j] < array[min_index]) {
+                changeColour(min_index, "#FF0000")
                 changeColour(j, "#0000FF") // blue
                 await sleep(sortingSpeed);
                 min_index = j;
