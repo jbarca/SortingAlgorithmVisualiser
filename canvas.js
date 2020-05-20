@@ -1,13 +1,13 @@
 /*  Canvas to visualise the algorithms
     Author: Jacob Barca
     Since: 15/11/2019
-    Last Modified: 20/11/2019
+    Last Modified: 20/5/2020
 */
 
 import { getAlgorithm } from './algorithms.js';
 
 /* Constants */
-const MAX_WIDTH = 500;
+const MAX_WIDTH = 1000;
 const MAX_HEIGHT = 500;
 var sortingSpeed = 4; // ms - minimum time is 4ms for setTimeout
 var array = [];
@@ -15,6 +15,7 @@ var rects = [];
 var canvas = null;
 var ctx = null;
 var MAX_ELEMENT_HEIGHT;
+var Colour = {RED: "#FF0000", GREEN: "#00FF00", BLUE: "#0000FF"};
 
 var sortButton = document.getElementById("sort");
 var newArrayButton = document.getElementById("new");
@@ -109,7 +110,7 @@ function init() {
     canvas.width = MAX_WIDTH;
     canvas.height = MAX_HEIGHT;
     ctx = canvas.getContext("2d");
-    createArray(50);
+    createArray(MAX_WIDTH / 10);
     rects = createRectangles();
     drawRectangles();
 }
@@ -124,7 +125,7 @@ function createArray(n) {
 function createRectangles() {
     var rectangles = [];
     for (var i = 0; i < array.length; i++) {
-        rectangles.push(new Rectangle(10 * i, MAX_HEIGHT - array[i] * MAX_ELEMENT_HEIGHT, 5, array[i] * MAX_ELEMENT_HEIGHT, "#FF0000", ctx));
+        rectangles.push(new Rectangle(10 * i, MAX_HEIGHT - array[i] * MAX_ELEMENT_HEIGHT, 5, array[i] * MAX_ELEMENT_HEIGHT, Colour.RED, ctx));
     }
     return rectangles;
 }
@@ -188,24 +189,71 @@ async function selection_sort() {
     for (var i = 0; i < array.length; i++) {
         min_index = i;
         for (var j = i + 1; j < array.length; j++) {
-            changeColour(j, "#00FF00") // green
+            changeColour(j, Colour.GREEN) // green
             await sleep(sortingSpeed);
             if (array[j] < array[min_index]) {
-                changeColour(min_index, "#FF0000")
-                changeColour(j, "#0000FF") // blue
+                changeColour(min_index, Colour.RED)
+                changeColour(j, Colour.BLUE) // blue
                 await sleep(sortingSpeed);
                 min_index = j;
             }
             else {
-                changeColour(j, "#FF0000") // red
+                changeColour(j, Colour.RED) // red
             }
         }
-        changeColour(min_index, "#FF0000");
+        changeColour(min_index, Colour.RED);
         swap(array, i, min_index);
         
         clearScreen();
         swapRectangles(rects, i, min_index);
         drawRectangles();
         await sleep(sortingSpeed);
+    }
+}
+
+async function insertion_sort() {
+    var j;
+    var temp;
+    for (var i = 0; i < array.length; i++) {
+        j = i;
+        changeColour(i, Colour.GREEN);
+        await sleep(sortingSpeed);
+        while (j > 0 && array[j] < array[j - 1]) {
+            changeColour(j, Colour.BLUE);
+            await sleep(sortingSpeed);
+            temp = array[j];
+            array[j] = array[j - 1];
+            array[j - 1] = temp;
+            swapRectangles(rects, j, j - 1);
+            j--;
+        }
+        changeColour(j, Colour.RED);
+        changeColour(i, Colour.RED);
+    }
+}
+
+async function bubble_sort() {
+    var mark = array.length - 1;
+    var temp;
+    var swapped = false;
+    for (var i = mark; i > 0; i--) {
+        for (var j = 0; j < i; j++) {
+            swapped = false;
+            changeColour(j, Colour.GREEN);
+            if (array[j] > array[j + 1]) {
+                changeColour(j, Colour.BLUE);
+                await sleep(sortingSpeed);
+                temp = array[j];
+                array[j] = array[j + 1];
+                array[j + 1] = temp;
+                swapped = true;
+                swapRectangles(rects, j, j + 1);
+            }
+            if (!swapped) {
+                await sleep(sortingSpeed);
+            }
+            changeColour(j, Colour.RED);
+        }
+        changeColour(i, Colour.RED);
     }
 }
