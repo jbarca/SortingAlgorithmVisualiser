@@ -1,15 +1,15 @@
 /*  Canvas to visualise the algorithms
     Author: Jacob Barca
     Since: 15/11/2019
-    Last Modified: 20/5/2020
+    Last Modified: 21/5/2020
 */
 
 import { getAlgorithm } from './algorithms.js';
 
 /* Constants */
-const MAX_WIDTH = 1000;
+const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
-var sortingSpeed = 4; // ms - minimum time is 4ms for setTimeout
+var sortingSpeed = 50; // ms - minimum time is 4ms for setTimeout
 var array = [];
 var rects = [];
 var canvas = null;
@@ -28,6 +28,7 @@ function sleep(ms) {
 
 sortButton.onclick = function() {
     animateSorting();
+    console.log(array);
 }
 
 newArrayButton.onclick = function() {
@@ -189,16 +190,16 @@ async function selection_sort() {
     for (var i = 0; i < array.length; i++) {
         min_index = i;
         for (var j = i + 1; j < array.length; j++) {
-            changeColour(j, Colour.GREEN) // green
+            changeColour(j, Colour.GREEN) 
             await sleep(sortingSpeed);
             if (array[j] < array[min_index]) {
                 changeColour(min_index, Colour.RED)
-                changeColour(j, Colour.BLUE) // blue
+                changeColour(j, Colour.BLUE) 
                 await sleep(sortingSpeed);
                 min_index = j;
             }
             else {
-                changeColour(j, Colour.RED) // red
+                changeColour(j, Colour.RED) 
             }
         }
         changeColour(min_index, Colour.RED);
@@ -256,4 +257,38 @@ async function bubble_sort() {
         }
         changeColour(i, Colour.RED);
     }
+}
+
+// TODO: Fix recursion with async functions
+async function quick_sort() {
+    await quick_sort_aux(0, array.length - 1);
+}
+
+async function quick_sort_aux(start, end) {
+    if (start < end) {
+        var bound = partition(start, end);
+        await quick_sort_aux(start, bound - 1);
+        await quick_sort_aux(bound + 1, end);
+    }
+}
+
+async function partition(start, end) {
+    var pivot = array[end]
+    var bound = start - 1;
+    var temp;
+    for (var i = start; i <= end; i++) {
+        if (array[i] < pivot) {
+            bound++;
+            temp = array[i];
+            array[i] = array[bound];
+            array[bound] = temp;
+        }
+    }
+
+    temp = array[end];
+    array[end] = array[bound + 1];
+    array[bound + 1] = temp;
+
+    return bound + 1;
+
 }
