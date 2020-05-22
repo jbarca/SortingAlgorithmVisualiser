@@ -9,7 +9,7 @@ import { getAlgorithm } from './algorithms.js';
 /* Constants */
 const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
-var sortingSpeed = 50; // ms - minimum time is 4ms for setTimeout
+var sortingSpeed = 1000; // ms - minimum time is 4ms for setTimeout
 var array = [];
 var rects = [];
 var canvas = null;
@@ -28,7 +28,6 @@ function sleep(ms) {
 
 sortButton.onclick = function() {
     animateSorting();
-    console.log(array);
 }
 
 newArrayButton.onclick = function() {
@@ -259,9 +258,70 @@ async function bubble_sort() {
     }
 }
 
+// TODO: Fix rectangle animation for quick sort.
+async function quick_sort_iterative(start, end) {
+    var stack = new Array(end - start + 1);
+    var top = -1;
+
+    top++;
+    stack[top] = start;
+    top++;
+    stack[top] = end;
+
+    while (top >= 0) {
+        end = stack[top];
+        top--;
+        start = stack[top];
+        top--;
+
+        var pivot = array[end]
+        var bound = start - 1;
+        var temp;
+        for (var i = start; i <= end; i++) {
+            changeColour(i, Colour.GREEN);
+            await sleep(sortingSpeed);
+            if (array[i] < pivot) {
+                changeColour(i, Colour.BLUE);
+                await sleep(sortingSpeed);
+                bound++;
+                temp = array[i];
+                array[i] = array[bound];
+                array[bound] = temp;
+                swapRectangles(rects, i, bound);
+                changeColour(bound, Colour.RED);
+                changeColour(i, Colour.RED);
+            }
+        }
+
+        changeColour(end, Colour.BLUE);
+        await sleep(sortingSpeed);
+        temp = array[end];
+        array[end] = array[bound + 1];
+        array[bound + 1] = temp;
+        swapRectangles(rects, end, bound + 1);
+        changeColour(bound + 1, Colour.RED);
+
+        var p = bound + 1;
+
+        if (p - 1 > start) {
+            top++;
+            stack[top] = start;
+            top++;
+            stack[top] = p - 1;
+        }
+        if (p + 1 < end) {
+            top++;
+            stack[top] = p + 1;
+            top++;
+            stack[top] = end;
+        }
+    }
+    console.log(array);
+}
+
 // TODO: Fix recursion with async functions
-async function quick_sort() {
-    await quick_sort_aux(0, array.length - 1);
+function quick_sort() {
+    quick_sort_iterative(0, array.length - 1);
 }
 
 async function quick_sort_aux(start, end) {
@@ -272,7 +332,7 @@ async function quick_sort_aux(start, end) {
     }
 }
 
-async function partition(start, end) {
+function partition(start, end) {
     var pivot = array[end]
     var bound = start - 1;
     var temp;
