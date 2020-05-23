@@ -1,7 +1,7 @@
 /*  Canvas to visualise the algorithms
     Author: Jacob Barca
     Since: 15/11/2019
-    Last Modified: 21/5/2020
+    Last Modified: 23/5/2020
 */
 
 import { getAlgorithm } from './algorithms.js';
@@ -9,7 +9,9 @@ import { getAlgorithm } from './algorithms.js';
 /* Constants */
 const MAX_WIDTH = 500;
 const MAX_HEIGHT = 500;
-var sortingSpeed = 1000; // ms - minimum time is 4ms for setTimeout
+const MAX_SORTING_SPEED = 4; // ms
+const MIN_SORTING_SPEED = 1000; // ms
+var sortingSpeed = 4; // ms - minimum time is 4ms for setTimeout
 var array = [];
 var rects = [];
 var canvas = null;
@@ -19,11 +21,16 @@ var Colour = {RED: "#FF0000", GREEN: "#00FF00", BLUE: "#0000FF"};
 
 var sortButton = document.getElementById("sort");
 var newArrayButton = document.getElementById("new");
+var slider = document.getElementById("speed");
 
 function sleep(ms) {
     /* Function to allow the program to be delayed for a 
     certain amount of time */
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+slider.oninput = function() {
+    sortingSpeed = (MIN_SORTING_SPEED + MAX_SORTING_SPEED) - slider.value;
 }
 
 sortButton.onclick = function() {
@@ -113,6 +120,7 @@ function init() {
     createArray(MAX_WIDTH / 10);
     rects = createRectangles();
     drawRectangles();
+    sortingSpeed = slider.value;
 }
 
 function createArray(n) {
@@ -258,7 +266,6 @@ async function bubble_sort() {
     }
 }
 
-// TODO: Fix rectangle animation for quick sort.
 async function quick_sort_iterative(start, end) {
     var stack = new Array(end - start + 1);
     var top = -1;
@@ -277,9 +284,10 @@ async function quick_sort_iterative(start, end) {
         var pivot = array[end]
         var bound = start - 1;
         var temp;
+        var swapped = false;
         for (var i = start; i <= end; i++) {
+            swapped = false;
             changeColour(i, Colour.GREEN);
-            await sleep(sortingSpeed);
             if (array[i] < pivot) {
                 changeColour(i, Colour.BLUE);
                 await sleep(sortingSpeed);
@@ -287,10 +295,14 @@ async function quick_sort_iterative(start, end) {
                 temp = array[i];
                 array[i] = array[bound];
                 array[bound] = temp;
+                swapped = true;
                 swapRectangles(rects, i, bound);
                 changeColour(bound, Colour.RED);
-                changeColour(i, Colour.RED);
             }
+            if (!swapped) {
+                await sleep(sortingSpeed);
+            }
+            changeColour(i, Colour.RED);
         }
 
         changeColour(end, Colour.BLUE);
@@ -316,39 +328,8 @@ async function quick_sort_iterative(start, end) {
             stack[top] = end;
         }
     }
-    console.log(array);
 }
 
-// TODO: Fix recursion with async functions
 function quick_sort() {
     quick_sort_iterative(0, array.length - 1);
-}
-
-async function quick_sort_aux(start, end) {
-    if (start < end) {
-        var bound = partition(start, end);
-        await quick_sort_aux(start, bound - 1);
-        await quick_sort_aux(bound + 1, end);
-    }
-}
-
-function partition(start, end) {
-    var pivot = array[end]
-    var bound = start - 1;
-    var temp;
-    for (var i = start; i <= end; i++) {
-        if (array[i] < pivot) {
-            bound++;
-            temp = array[i];
-            array[i] = array[bound];
-            array[bound] = temp;
-        }
-    }
-
-    temp = array[end];
-    array[end] = array[bound + 1];
-    array[bound + 1] = temp;
-
-    return bound + 1;
-
 }
